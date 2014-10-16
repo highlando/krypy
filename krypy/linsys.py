@@ -256,7 +256,8 @@ class _KrylovSolver(object):
                  maxiter=None,
                  explicit_residual=False,
                  store_arnoldi=False,
-                 dtype=None
+                 dtype=None,
+                 **kwargs
                  ):
         r'''Init standard attributes and perform checks.
 
