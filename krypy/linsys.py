@@ -925,6 +925,7 @@ class _RestartedSolver(object):
             self.errnorms = [numpy.Inf]
 
         restart = 0
+        prv_res = 1
         while restart == 0 or \
                 self.resnorms[-1] > tol and restart <= max_restarts:
             try:
@@ -950,11 +951,20 @@ class _RestartedSolver(object):
                 self.errnorms += sol.errnorms
 
             restart += 1
+            # gain = (self.resnorms[0]-self.resnorms[-1])/(self.resnorms[0])
+            gain = prv_res - self.resnorms[-1]
+            prv_res = self.resnorms[-1]
+            enonr = (self.resnorms[0] - tol) / gain
+
+            print ('Restart: {0}/{1}, tol: {4:.2e}, ' +
+                   'res: {2:.2e}, gain: {3:.2e}, enor: {5:.3f}').\
+                format(restart-1, max_restarts, self.resnorms[-1],
+                       gain, tol, enonr)
 
         if self.resnorms[-1] > tol:
             raise utils.ConvergenceError(
-                'No convergence after {0} restarts.'.format(max_restarts),
-                self)
+                'No convergence after {0} restarts.'.format(max_restarts) +
+                'residual: {0}'.format(self.resnorms[-1]), self)
 
 
 class RestartedGmres(_RestartedSolver):
