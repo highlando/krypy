@@ -954,7 +954,7 @@ class _RestartedSolver(object):
             # gain = (self.resnorms[0]-self.resnorms[-1])/(self.resnorms[0])
             gain = prv_res - self.resnorms[-1]
             prv_res = self.resnorms[-1]
-            enonr = (self.resnorms[0] - tol) / gain
+            enonr = (self.resnorms[-1] - tol) / gain
 
             print ('Restart: {0}/{1}, tol: {4:.2e}, ' +
                    'res: {2:.2e}, gain: {3:.2e}, enor: {5:.3f}').\
